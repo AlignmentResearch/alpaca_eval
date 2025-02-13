@@ -121,7 +121,9 @@ def huggingface_local_completions(
 
     default_kwargs = dict(
         do_sample=do_sample,
-        model_kwargs={k: v for k, v in model_kwargs.items() if k != "trust_remote_code"},
+        model_kwargs={
+            k: v for k, v in model_kwargs.items() if k != "revision" and k != "trust_remote_code"
+        },
         batch_size=batch_size,
     )
     default_kwargs.update(kwargs)
@@ -131,6 +133,7 @@ def huggingface_local_completions(
         model=model,
         tokenizer=tokenizer,
         **default_kwargs,
+        revision=model_kwargs.get("revision", None),
         trust_remote_code=model_kwargs.get("trust_remote_code", False),
     )
 
